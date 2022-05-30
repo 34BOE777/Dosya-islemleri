@@ -1,0 +1,205 @@
+ab312345öğrencinin ortalaması: 37.00
+cd316297öğrencinin ortalaması: 76.00
+Closed. This question is not reproducible or was caused by typos. It is not currently accepting answers.
+Want to improve this question? Update the question so it's on-topic for Stack Overflow.
+
+Closed 4 months ago.
+
+I am relatively new to using files in C. Today, when I was working on my program, when I declared a FILE pointer and tried to utilize it, I keep getting this error:
+
+answer3.c:44:5: error: ‘fp’ is used uninitialized in this function [-Werror=uninitialized]
+   if(fp == NULL)
+     ^
+cc1: all warnings being treated as errors
+Here is my code
+
+bool  runIntegrate(char * infilename, char * outfilename)
+    // return true if it can successfully open and read the input 
+    // and open and write the output
+    // return false when encountering any problem
+    {
+      Integration intrg;
+      FILE * fp;
+      fopen(infilename,"r");
+      // open the input file name for reading
+      // if fopen fails, return false
+      if(fp == NULL)
+       {
+        fclose(fp);
+        return false;            
+       }
+      
+      if (fscanf(fp,"%lf\n", &intrg.lowerlimit) != 1){
+        fclose(fp);
+        return false;
+      }
+I am pretty sure I have the formatting correct, so I am not too sure what the issue seems to be. Any help would be greatly appreciated. Thank you!
+
+c
+file
+pointers
+initialization
+variable-assignment
+Share
+Edit
+Follow
+edited Sep 17 '21 at 3:47
+
+Vlad from Moscow
+248k1818 gold badges161161 silver badges285285 bronze badges
+asked Sep 17 '21 at 3:31
+
+aerialace8
+1933 bronze badges
+1
+What don't you understand? Where do you assign a value to fp? I think you meant to assign the result of fopen() to it. – 
+Barmar
+ Sep 17 '21 at 3:33
+fp = fopen(infilename,"r"); – 
+Barmar
+ Sep 17 '21 at 3:34
+1
+The error message is pretty clear. You've not assigned a value to fp* before you use it in your if` statement. formatting is irrelevant - you could write the code as a single line without any formatting and you still wouldn't be assigning a value to fp. – 
+Ken White
+ Sep 17 '21 at 3:35 
+Add a comment
+1 Answer
+
+1
+
+You forgot to assign the returned value of the call of the function fopen to the pointer fp
+
+  FILE * fp;
+  fopen(infilename,"r");
+  // open the input file name for reading
+  // if fopen fails, return false
+  if(fp == NULL)
+  //...
+Thus the pointer fp stays uninitialized.
+
+Instead write
+
+  FILE * fp = fopen(infilename,"r");
+  // open the input file name for reading
+  // if fopen fails, return false
+  if(fp == NULL)
+Pay attention to that it is better to declare the function parameters with the qualifier const because they are not being changed within the function
+
+bool  runIntegrate( const char * infilename, const char * outfilename)
+Share
+Edit
+Follow
+edited Sep 17 '21 at 3:45
+answered Sep 17 '21 at 3:38
+
+Vlad from Moscow
+248k1818 gold badges161161 silver badges285285 bronze badges
+Add a comment
+Not the answer you're looking for? Browse other questions tagged c file pointers initialization variable-assignment or ask your own question.
+The Overflow Blog
+Favor real dependencies for unit testing
+Podcast 403: Professional ethics and phantom braking
+Featured on Meta
+Providing a JavaScript API for userscripts
+Congratulations to the 59 sites that just left Beta
+Hot Meta Posts
+23
+Can we please unlist [tolist]?
+12
+Merge [context-api] into [react-context]
+43
+What is the policy on users deleting closed questions and asking them again...
+16
+Am I allowed to ask about cracking a forgotten ethereum wallet keystore file...
+
+Report this ad
+Remote jobs
+
+Dedicated Linux Engineer, AMER
+Canonical  No office location
+REMOTE
+ubuntulinux
+
+Software Engineer - Juju (Go / Distributed Systems)
+Canonical  No office location
+REMOTE
+golinux
+
+Embedded Linux Engineer
+Canonical  No office location
+REMOTE
+linuxubuntu
+
+Senior Software Engineer - Cloud Engineering
+Canonical  No office location
+REMOTE
+cubuntu
+
+Embedded Linux Consulting Engineering Director
+Canonical  No office location
+REMOTE
+linuxubuntu
+
+Embedded Linux Engineer
+Canonical  No office location
+REMOTE
+linuxubuntu
+
+Senior Software Engineer - Linux Engineering
+Canonical  No office location
+REMOTE
+cubuntu
+
+VP, Software Engineering
+Canonical  No office location
+REMOTE
+ubuntulinux
+View more jobs on Stack Overflow
+Related
+736
+How do you pass a function as a parameter in C?
+2826
+When should static_cast, dynamic_cast, const_cast and reinterpret_cast be used?
+1384
+How do function pointers in C work?
+628
+Command not found error in Bash variable assignment
+523
+Typedef function pointer?
+920
+"Cross origin requests are only supported for HTTP." error when loading a local file
+4
+'jpg_name' may be used uninitialized in this function [-Werror=uninitialized]
+678
+Call a function from another file?
+2
+fscanf csv in C. Value not assigned
+1
+error: ‘outList’ is used uninitialized in this function [-Werror=uninitialized]
+Hot Network Questions
+Which, if any, cut of T2 is officially canon?
+Simulated annealing for deep learning: Why gradient free statistical learning is not in the main stream?
+What exactly is Nietzsche’s criticism of the Thing-in-itself and is it supplanted by his Will to Power?
+Do you need a new brain to see new colors?
+When an electron hits a fluorescent screen mounted on a spring, why can't we get both position and momentum?
+Huge trees in an "air belt" in space
+use a foreach loop for drawing a staircase in tikz
+Scifi book with 57 Heinz Varieties powered spaceship
+How to discuss potentially dropping a Client I (and others) have a moral objection to
+Wild Salmon from grill is too dry
+Does John 1:2 begin by alluding to Genesis 2:4?
+Why do microcontrollers need a programmer device?
+more hot questions
+STACK OVERFLOW
+Questions
+Jobs
+Developer Jobs Directory
+Salary Calculator
+Help
+Mobile
+Disable Responsiveness
+PRODUCTS
+Teams TalentAdvertisin. Enterprise COMPANY About Press. Work Here Legal Privacy PolicyTerms of ServiceContact UsCookie SettingsCookie PolicySTACK EXCHANGE NETWORKTechnology
+Culture & recreationLife &arts Science Professional Business API Data Blo FacebookTwitterLinkedInInstagram
+site design / logo © 2022 Stack Exchange Inc; user contributions licensed under cc by-sa. rev 2022.1.5.41089sgsecsselamünaleyküm ben dj dikkat
+yaso dvşnhoıshvıdibcıvincil
