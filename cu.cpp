@@ -9,7 +9,8 @@ int main()
 	dosya.close();
 
 
-	ifstream dosya2("bilgi.txt");
+	ifstream dosya2("bilgi.txt");/*burada önemli olan dosyaya yazmak için dosya diye bir obje oluşturmamız gerekirken
+	dosyayı okumak için de dosya2 diye ayriyeten bir obje daha oluşturmamız gerek.*/ 
 	if (!dosya)
 	 {
 	 	cerr<<"Dosya açılmadı!"<<endl;
